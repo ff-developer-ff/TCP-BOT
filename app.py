@@ -1135,11 +1135,11 @@ Send any emoji to find out what to do next.
                             self.GenResponsMsg(
                                 f"""
 [C][B][00FFFF]━━━━━━━━━━━━━━━  
-[FFFFFF]Would you like to get your own custom server?
+[FFFFFF]You're using a custom Guild Bot assistant.
 
-[FFFFFF]To support your project and get a powerful and stable server, contact the developer Hashir via:
+[FFFFFF]This bot is designed to enhance your guild experience.
 
-
+[FFFFFF]Proudly serving the [00FFCC]Cuddlez Guild ♡
 
 [FFFFFF]Want to see the commands? Just send:  
 [00FF00]/help
@@ -2262,7 +2262,7 @@ for thread in threads:
     
 if __name__ == "__main__":
     try:
-        client_thread = FF_CLIENT(id="3328420172", password="0335CF19E7ED98FF218D8863259A7ED421EBC4F25063D05FEE1C38FB3AF647FF")
+        client_thread = FF_CLIENT(id="3978307099", password="A47256BA574C220EFA4B6D5FCC6876E7D2B7B963801FA8A60FC2091EE96C8464")
         client_thread.start()
     except Exception as e:
         logging.error(f"Error occurred: {e}")
