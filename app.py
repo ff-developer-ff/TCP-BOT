@@ -1657,16 +1657,16 @@ Status: {status}
                     except Exception as inner_e:
                         print(f"\nCritical Error: {inner_e}\n")
                         restart_program()            
-            if "1200" in data.hex()[0:4] and b"/add/" in data:
+            if "1200" in data.hex()[0:4] and b"/remove/" in data:
                 try:
                      
                     raw_message = data.decode('utf-8', errors='ignore')
                     cleaned_message = raw_message.replace('\x00', '').strip()
                     print(f"\nRaw Message: {raw_message}\nCleaned Message: {cleaned_message}\n")
                     import re
-                    id_match = re.search(r'/add/(\d{5,15})\b', cleaned_message)
+                    id_match = re.search(r'/remove/(\d{5,15})\b', cleaned_message)
                     if not id_match:
-                        id_match = re.search(r'/add/(\d+)', cleaned_message)
+                        id_match = re.search(r'/remove/(\d+)', cleaned_message)
                     
                     if id_match:
                         player_id = id_match.group(1)
