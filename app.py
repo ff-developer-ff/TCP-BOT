@@ -399,7 +399,7 @@ def spam_requests(player_id):
     else:
         print("Fuck-Spam")
 def attack_profail(player_id):
-    url = f"http://168.231.113.96:7294/attack?uid={player_id}"
+    url = f"https://spam-hxc-azure.vercel.app/send_requests?uid={player_id}"
     res = requests.get(url)
     if res.status_code() == 200:
         print("Done-Attack")
@@ -407,7 +407,7 @@ def attack_profail(player_id):
         print("Fuck-Attack")
 
 def Increase_visits(player_id):
-    url = f"https://mazid-gmr-visit.vercel.app/visit?region=IND&uid={player_id}"
+    url = f"https://visitor-source.vercel.app/visit?&uid={player_id}&server_name=pk"
     res = requests.get(url)
     if res.status_code == 200:      
         data = res.json()
@@ -417,7 +417,6 @@ def Increase_visits(player_id):
         id_name = data["PlayerNickname"]
         msg_visit = f"""
 [C][B][11EAFD]‎━━━━━━━━━━━━
-[FFFFFF]Player Name: [00FF00]{id_name}  
 [FFFFFF]Player ID: [00FF00]{uid}  
 [FFFFFF]Visit Count: [00FF00]{succvisit}  
 [C][B][11EAFD]‎━━━━━━━━━━━━
@@ -426,6 +425,46 @@ def Increase_visits(player_id):
         return msg_visit
     else:
         return "فشل زيادة زيارات للاعب"
+def Remove(player_id):
+    url = f"https://tcp-iota.vercel.app/remove?&uid={player_id}"
+    res = requests.get(url)
+    if res.status_code == 200:
+        data = res.json()
+        uid = data["target_uid"]
+        status = data["status"]
+        msg_visit = f"""
+[11EAFD][B][C]
+━━━━━
+[FFFFFF]Player ID: {uid}
+[FFFFFF]Status: {status}
+[FFFFFF]Remove SucessFully
+━━━━━
+[808080][B][C]Dev: Hashir
+"""
+        return msg_visit
+    else:
+        return "فشل جلب معلومات لاعب"
+
+def Add(player_id):
+    url = f"https://tcp-iota.vercel.app/add?&uid={player_id}"
+    res = requests.get(url)
+    if res.status_code == 200:
+        data = res.json()
+        uid = data["target_uid"]
+        status = data["status"]
+        msg_visit = f"""
+[11EAFD][B][C]
+━━━━━
+[FFFFFF]Player ID: {uid}
+[FFFFFF]Status: {status}
+[FFFFFF]Added SucessFully
+━━━━━
+[808080][B][C]Dev: Hashir
+"""
+        return msg_visit
+    else:
+        return "فشل جلب معلومات لاعب"
+
 
 def GetIdRegion(player_id):
     url = f"http://amin-belara-api.vercel.app/check_banned?player_id={player_id}"
@@ -628,7 +667,7 @@ class FF_CLIENT(threading.Thread):
                 17: {
                 2: 94,
                 6: 11,
-                8: "1.109.5",
+                8: "1.111.14",
                 9: 3,
                 10: 2
                 },
@@ -702,7 +741,7 @@ class FF_CLIENT(threading.Thread):
             17: {
             2: 94,
             6: 11,
-            8: "1.109.5",
+            8: "1.111.14",
             9: 3,
             10: 2
             },
@@ -737,7 +776,7 @@ class FF_CLIENT(threading.Thread):
             14: {
             2: 5756,
             6: 11,
-            8: "1.109.5",
+            8: "1.111.14",
             9: 3,
             10: 2
             },
@@ -834,7 +873,7 @@ class FF_CLIENT(threading.Thread):
         fields = {
     1: 1,
     2: {
-        1: 657852060,
+        1: 2549373297,
         2: Enc_Id,
         3: 2,
         4: str(Msg),
@@ -890,7 +929,7 @@ class FF_CLIENT(threading.Thread):
             2: 1393,
             4: "wW_T",
             6: 11,
-            8: "1.109.5",
+            8: "1.111.14",
             9: 3,
             10: 2
             },
@@ -1368,9 +1407,9 @@ Accept request quickly!!!
 [808080][B][C]Dev: Hashir
             """, uid))
                     
-                    sleep(9)
-                    #leavee = self.leave_s()
-                    #socket_client.send(leavee)
+                    sleep(10)
+                    leavee = self.leave_s()
+                    socket_client.send(leavee)
             
                 except Exception as e:
                     print(f"Get Player Command Error: {e}")
@@ -1581,7 +1620,80 @@ Status: {status}
                     except Exception as inner_e:
                         print(f"\nCritical Error: {inner_e}\n")
                         restart_program()
-
+            if "1200" in data.hex()[0:4] and b"/add/" in data:
+                try:
+                     
+                    raw_message = data.decode('utf-8', errors='ignore')
+                    cleaned_message = raw_message.replace('\x00', '').strip()
+                    print(f"\nRaw Message: {raw_message}\nCleaned Message: {cleaned_message}\n")
+                    import re
+                    id_match = re.search(r'/add/(\d{5,15})\b', cleaned_message)
+                    if not id_match:
+                        id_match = re.search(r'/add/(\d+)', cleaned_message)
+                    
+                    if id_match:
+                        player_id = id_match.group(1)
+                        print(f"Extracted Player ID: {player_id}")
+                        if not (5 <= len(player_id) <= 15):
+                            raise ValueError("يجب أن يكون طول الآيدي بين 5-15 رقم")
+                    else:
+                        raise ValueError("لم يتم العثور على آيدي لاعب صالح في الرسالة")
+                    json_result = get_available_room(data.hex()[10:])
+                    parsed_data = json.loads(json_result)
+                    uid = parsed_data["5"]["data"]["1"]["data"]
+                    clients.send(self.GenResponsMsg("Processing...", uid))
+                    b = Add(player_id)
+                    response_message = Add(player_id)
+                    clients.send(self.GenResponsMsg(response_message, uid))
+            
+                except Exception as e:
+                    print(f"\nError: {e}\n")
+                    try:
+                        json_result = get_available_room(data.hex()[10:])
+                        parsed_data = json.loads(json_result)
+                        uid = parsed_data["5"]["data"]["1"]["data"]
+                        error_msg = f"[FF0000]خطأ: {e}" if "آيدي" in str(e) else f"[FF0000]خطأ في المعالجة: {e}"
+                        clients.send(self.GenResponsMsg(error_msg, uid))
+                    except Exception as inner_e:
+                        print(f"\nCritical Error: {inner_e}\n")
+                        restart_program()            
+            if "1200" in data.hex()[0:4] and b"/add/" in data:
+                try:
+                     
+                    raw_message = data.decode('utf-8', errors='ignore')
+                    cleaned_message = raw_message.replace('\x00', '').strip()
+                    print(f"\nRaw Message: {raw_message}\nCleaned Message: {cleaned_message}\n")
+                    import re
+                    id_match = re.search(r'/add/(\d{5,15})\b', cleaned_message)
+                    if not id_match:
+                        id_match = re.search(r'/add/(\d+)', cleaned_message)
+                    
+                    if id_match:
+                        player_id = id_match.group(1)
+                        print(f"Extracted Player ID: {player_id}")
+                        if not (5 <= len(player_id) <= 15):
+                            raise ValueError("يجب أن يكون طول الآيدي بين 5-15 رقم")
+                    else:
+                        raise ValueError("لم يتم العثور على آيدي لاعب صالح في الرسالة")
+                    json_result = get_available_room(data.hex()[10:])
+                    parsed_data = json.loads(json_result)
+                    uid = parsed_data["5"]["data"]["1"]["data"]
+                    clients.send(self.GenResponsMsg("Processing...", uid))
+                    b = Remove(player_id)
+                    response_message = Remove(player_id)
+                    clients.send(self.GenResponsMsg(response_message, uid))
+            
+                except Exception as e:
+                    print(f"\nError: {e}\n")
+                    try:
+                        json_result = get_available_room(data.hex()[10:])
+                        parsed_data = json.loads(json_result)
+                        uid = parsed_data["5"]["data"]["1"]["data"]
+                        error_msg = f"[FF0000]خطأ: {e}" if "آيدي" in str(e) else f"[FF0000]خطأ في المعالجة: {e}"
+                        clients.send(self.GenResponsMsg(error_msg, uid))
+                    except Exception as inner_e:
+                        print(f"\nCritical Error: {inner_e}\n")
+                        restart_program()            
             if "1200" in data.hex()[0:4] and b"/attack/" in data:
                 try:
                      
@@ -1926,6 +2038,31 @@ Please check again
 	                except Exception as e:
 	                        print(f"Error processing data: {e}")
             import re
+            if "1200" in data.hex()[0:4] and b"/fs" in data:
+                i = re.split("/fs", str(data))[1]
+                if "***" in i:
+                    i = i.replace("***", "106")
+                sid = str(i).split("(\\x")[0]
+                json_result = get_available_room(data.hex()[10:])
+                parsed_data = json.loads(json_result)
+                
+                iddd = parsed_data["5"]["data"]["1"]["data"]
+                tempid = iddd
+                invskwad = self.request_skwad(iddd)
+                socket_client.send(invskwad)
+                sent_inv = True
+                time.sleep(3)
+                startauto = self.start_auto()
+                socket_client.send(startauto)
+                
+                
+                
+                uid = parsed_data["5"]["data"]["1"]["data"]
+                clients.send(
+                    self.GenResponsMsg(
+                        f"[C][B][00ff00]Started Sucessfully ! ", uid
+                    )
+            )
             if "1200" in data.hex()[0:4] and b"/likes/" in data:
                 import re
                 try:
@@ -2018,6 +2155,9 @@ Please check again
 """
 	                clients.send(self.GenResponsMsg(response_message, uid))
 	                response_mssg = f"""
+[FFFFFF][B]For Start Match:  
+[1E90FF]/🗿fs
+
 [FFFFFF][B]Check the player’s server:
 [1E90FF]/🗿region/104[c]145[c]933[c]49
 
